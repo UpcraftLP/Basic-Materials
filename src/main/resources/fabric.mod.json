@@ -31,5 +31,6 @@
     "main": [
       "dev.upcraft.materials.base.BasicMaterials"
     ]
-  }
+  },
+  "accessWidener": "META-INF/basic_materials.aww"
 }
