@@ -20,8 +20,11 @@ archivesBaseName = "basic-materials"
 
 boolean isPreviewBuild = !ENV.TAG || ENV.TAG.matches(".+-.+")
 def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" : buildTime}-${project.minecraft_version}") : ""
-def buildMeta = (isPreviewBuild && ENV.BUILD_NUMBER) ? "+${buildNumber}" : ""
-version = "${ENV.TAG ?: "development"}${buildMeta}"
+version = (ENV.TAG ?: "development") + (isPreviewBuild ? "+${buildNumber}" : "")
+
+minecraft {
+    accessWidener = file("src/main/resources/basic_materials.accesswidener")
+}
 
 repositories {
     jcenter()
@@ -59,7 +62,7 @@ dependencies {
 
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
 
-    modImplementation("io.github.GlassPane:Mesh:${project.mesh_version}") {
+    include modImplementation("io.github.GlassPane:Mesh:${project.mesh_version}") {
         exclude(group: "net.fabricmc")
         exclude(group: "net.fabricmc.fabric-api")
     }

@@ -24,7 +24,7 @@ package dev.upcraft.materials.base.gen;
 
 import dev.upcraft.materials.base.BasicMaterials;
 import dev.upcraft.materials.base.block.MaterialOreBlock;
-import dev.upcraft.materials.base.config.MetalsOreConfig;
+import dev.upcraft.materials.base.config.MaterialsOreConfig;
 import dev.upcraft.materials.base.init.MaterialTags;
 import io.github.glasspane.mesh.util.collections.RegistryHelper;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
@@ -48,9 +48,9 @@ public class MaterialWorldgenFeatures {
     public static void init() {
         RegistryHelper.visitRegistry(Registry.BLOCK, (blockID, block) -> {
             if(block instanceof MaterialOreBlock) {
-                MetalsOreConfig.GenData defaultData = ((MaterialOreBlock) block).getDefaultGenerationData();
+                MaterialsOreConfig.GenData defaultData = ((MaterialOreBlock) block).getDefaultGenerationData();
                 if(defaultData != null) { // only proceed if this ore should actually generate naturally
-                    MetalsOreConfig.GenData data = MetalsOreConfig.get(block, blockID, b -> ((MaterialOreBlock) b).getDefaultGenerationData());
+                    MaterialsOreConfig.GenData data = MaterialsOreConfig.get(block, blockID, b -> ((MaterialOreBlock) b).getDefaultGenerationData());
                     OreFeatureConfig oreConfig = new OreFeatureConfig(data.generationRules, block.getDefaultState(), data.maxVeinSize);
 
                     // y = randomInt(maximum - topOffset) + bottomOffset

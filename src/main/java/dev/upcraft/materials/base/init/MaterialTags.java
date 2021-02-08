@@ -23,12 +23,16 @@
 package dev.upcraft.materials.base.init;
 
 import dev.upcraft.materials.base.BasicMaterials;
-import net.fabricmc.fabric.api.tag.TagRegistry;
 import net.minecraft.block.Block;
+import net.minecraft.tag.BlockTags;
 import net.minecraft.tag.Tag;
 
 public class MaterialTags {
 
-    public static final Tag<Block> OVERWORLD_SANDSTONE = TagRegistry.block(BasicMaterials.id("gen/overworld_sandstone"));
+    public static final Tag.Identified<Block> OVERWORLD_SANDSTONE = block("gen/overworld_sandstone");
+
+    private static Tag.Identified<Block> block(String id) {
+        return BlockTags.register(BasicMaterials.id(id).toString());
+    }
 
 }

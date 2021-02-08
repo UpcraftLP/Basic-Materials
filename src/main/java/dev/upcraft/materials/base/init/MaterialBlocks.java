@@ -25,7 +25,7 @@ package dev.upcraft.materials.base.init;
 import dev.upcraft.materials.base.BasicMaterials;
 import dev.upcraft.materials.base.block.MaterialBlock;
 import dev.upcraft.materials.base.block.MaterialOreBlock;
-import dev.upcraft.materials.base.config.MetalsOreConfig;
+import dev.upcraft.materials.base.config.MaterialsOreConfig;
 import dev.upcraft.materials.base.gen.MaterialWorldgenFeatures;
 import io.github.glasspane.mesh.api.annotation.AutoRegistry;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -41,12 +41,12 @@ public class MaterialBlocks {
 
     //ore blocks
     public static final Block BAUXITE_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withDefaultConfig(); //Aluminum
-    public static final Block CINNABAR_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F), 0, 2).withConfig(new MetalsOreConfig.GenData(0, 0, 100, 8, 0, false, BiomeSelectors.categories(Biome.Category.DESERT), MaterialWorldgenFeatures.RULE_SANDSTONE)); //Mercury
+    public static final Block CINNABAR_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F), 0, 2).withConfig(new MaterialsOreConfig.GenData(0, 0, 100, 8, 0, false, BiomeSelectors.categories(Biome.Category.DESERT), MaterialWorldgenFeatures.RULE_SANDSTONE)); //Mercury
     public static final Block COPPER_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withDefaultConfig();
     public static final Block LEAD_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withDefaultConfig();
     public static final Block NICKEL_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withDefaultConfig();
     public static final Block PLATINUM_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withDefaultConfig();
-    public static final Block SILVER_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withConfig(new MetalsOreConfig.GenData(32, 0, 64, 6, 0));
+    public static final Block SILVER_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withConfig(new MaterialsOreConfig.GenData(32, 0, 64, 6, 0));
     public static final Block TIN_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withDefaultConfig();
     public static final Block ZINC_ORE = new MaterialOreBlock(Block.Settings.of(Material.STONE).strength(3.0F, 3.0F)).withDefaultConfig();
 

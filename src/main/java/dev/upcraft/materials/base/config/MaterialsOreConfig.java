@@ -50,7 +50,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
-public class MetalsOreConfig {
+public class MaterialsOreConfig {
 
     private static final Path configFile = FabricLoader.getInstance().getConfigDir().resolve("materials/worldgen.json5");
     private static final Jankson SERIALIZER = Jankson.builder().build();

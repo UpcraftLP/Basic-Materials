@@ -22,9 +22,9 @@
  */
 package dev.upcraft.materials.base;
 
-import dev.upcraft.materials.base.gen.MaterialWorldgenFeatures;
 import dev.upcraft.materials.base.config.MaterialConfig;
-import dev.upcraft.materials.base.config.MetalsOreConfig;
+import dev.upcraft.materials.base.config.MaterialsOreConfig;
+import dev.upcraft.materials.base.gen.MaterialWorldgenFeatures;
 import dev.upcraft.materials.base.init.MaterialBlocks;
 import io.github.glasspane.mesh.api.annotation.CalledByReflection;
 import io.github.glasspane.mesh.api.logging.MeshLoggerFactory;
@@ -50,7 +50,7 @@ public class BasicMaterials implements ModInitializer {
     @Override
     public void onInitialize() {
         ConfigHandler.registerConfig(MODID, "materials/base", MaterialConfig.class);
-        MetalsOreConfig.init();
+        MaterialsOreConfig.init();
         MaterialWorldgenFeatures.init();
     }
 
