@@ -1,0 +1,203 @@
+import com.modrinth.minotaur.TaskModrinthUpload
+
+import java.nio.charset.StandardCharsets
+import java.time.Year
+
+plugins {
+    id "fabric-loom" version "0.5-SNAPSHOT"
+    id "maven-publish"
+    id "net.minecrell.licenser" version "0.4.1"
+    id "com.modrinth.minotaur" version "1.1.0"
+}
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_1_8
+
+def ENV = System.getenv()
+def buildTime = ENV.BUILD_TIME ?: new Date().format('yyyyMMddHHmmss')
+
+group = "dev.upcraft"
+archivesBaseName = "basic-materials"
+
+boolean isPreviewBuild = !ENV.TAG || ENV.TAG.matches(".+-.+")
+def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" : buildTime}-${project.minecraft_version}") : ""
+def buildMeta = (isPreviewBuild && ENV.BUILD_NUMBER) ? "+${buildNumber}" : ""
+version = "${ENV.TAG ?: "development"}${buildMeta}"
+
+repositories {
+    jcenter()
+    maven {
+        name = "OnyxStudios"
+        url = "https://maven.onyxstudios.dev"
+    }
+    maven {
+        name = "TehNut"
+        url = "https://maven.tehnut.info"
+    }
+    maven {
+        name = "JitPack"
+        url = "https://jitpack.io"
+    }
+    maven {
+        name = "CurseMaven"
+        url = "https://www.cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
+}
+
+dependencies {
+    modImplementation("net.fabricmc:fabric-loader:${project.loader_version}")
+    minecraft "com.mojang:minecraft:${project.minecraft_version}"
+    mappings "net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2"
+    compileOnly "org.jetbrains:annotations:${project.jetbrains_annotations_version}"
+
+    modImplementation("mcp.mobius.waila:Hwyla:${project.hwyla_version}") {
+        transitive = false
+    }
+    modImplementation("me.shedaniel:RoughlyEnoughItems:${project.rei_version}")
+
+    modImplementation("net.fabricmc.fabric-api:fabric-api:${project.fabric_version}")
+
+    modImplementation("io.github.GlassPane:Mesh:${project.mesh_version}") {
+        exclude(group: "net.fabricmc")
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    modImplementation("io.github.GlassPane:Mesh-API:${project.mesh_version}") {
+        exclude(group: "net.fabricmc")
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    annotationProcessor("io.github.GlassPane:Mesh-Annotations:${project.mesh_version}") {
+        exclude(group: "net.fabricmc")
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+
+    modRuntime "me.zeroeightsix:fiber:${project.fiber_version}"
+
+    modRuntime("io.github.prospector:modmenu:${project.modmenu_version}") {
+        exclude group: 'net.fabricmc.fabric-api'
+    }
+
+    // speed up loading of the dev client by disabling DFU
+    modRuntime("com.github.SuperCoder7979:databreaker:${project.databreaker_version}") {
+        exclude module: "fabric-loader"
+    }
+
+    modRuntime "curse.maven:xrad-393515:3146253" // https://www.curseforge.com/minecraft/mc-mods/xradiation/files/3146253
+}
+
+processResources {
+    // this will ensure that this task is redone when there"s a change
+    inputs.property "version", project.version
+
+    filteringCharset = "UTF-8"
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+
+    rename '(.+).accesswidener', 'META-INF/$1.aww'
+}
+
+java {
+    // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
+    // if it is present.
+    withSourcesJar()
+    withJavadocJar()
+}
+
+jar {
+    from("LICENSE.md") {
+        rename { "LICENSE_${archiveBaseName.get()}" }
+    }
+
+    manifest.mainAttributes(
+            "Implementation-Title": project.archivesBaseName,
+            "Implementation-Version": project.version,
+            "Maven-Artifact": "${project.group}:${project.archivesBaseName}:${project.version}".toLowerCase(Locale.ROOT),
+            "Built-On-Minecraft": project.minecraft_version,
+            "Built-On-Java": "${System.getProperty("java.vm.version")} (${System.getProperty("java.vm.vendor")})"
+    )
+}
+
+license {
+    header = file("code_quality/${project.license_header}_HEADER.txt")
+    // Apply licenses only to main source set
+    sourceSets = [sourceSets.main]
+    include "**/*.java"
+    charset = StandardCharsets.UTF_8.name()
+
+    //FIXME style block is broken
+    //see https://github.com/Minecrell/licenser/issues/10
+    //style {
+    //    java = "BLOCK_COMMENT"
+    //}
+    newLine = false // remove the empty line between header and package name
+    //ignoreFailures = true //Ignore failures and only print a warning on license violations
+
+    //export variables
+    ext {
+        year = Year.now()
+        projectDisplayName = project.archivesBaseName
+    }
+}
+
+tasks.withType(JavaCompile).configureEach {
+    // ensure that the encoding is set to UTF-8, no matter what the system default is
+    // this fixes some edge cases with special characters not displaying correctly
+    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    // If Javadoc is generated, this must be specified in that task too.
+    it.options.encoding = "UTF-8"
+
+    // The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
+    // JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
+    // We'll use that if it's available, but otherwise we'll use the older option.
+    def targetVersion = 8
+    if (JavaVersion.current().isJava9Compatible()) {
+        it.options.release = targetVersion
+    }
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            // add all the jars that should be included when publishing to maven
+            artifact(remapJar)
+            artifact(sourcesJar) {
+                builtBy remapSourcesJar
+            }
+        }
+    }
+
+    repositories {
+        if (ENV.MAVEN_UPLOAD_URL) {
+            maven {
+                url = ENV.MAVEN_UPLOAD_URL
+                credentials {
+                    username = ENV.MAVEN_UPLOAD_USER
+                    password = ENV.MAVEN_UPLOAD_PASSWORD
+                }
+            }
+        }
+    }
+}
+
+task publishToModrinth(type: TaskModrinthUpload, dependsOn: assemble) {
+    if (ENV.MODRINTH_TOKEN) {
+        token = ENV.MODRINTH_TOKEN
+    }
+    projectId = project.modrinth_id
+    uploadFile = remapJar
+    versionNumber = ENV.TAG ?: version
+    versionName = versionNumber // need this here because the Modrinth API doesn't do that by default
+    releaseType = isPreviewBuild ? ((ENV.TAG && ENV.TAG.contains("-beta")) ? "beta" : "alpha") : "release"
+    "${project.modrinth_game_versions}".split(";").each {
+        addGameVersion(it)
+    }
+    addLoader("fabric")
+}
+
+if (ENV.MODRINTH_TOKEN) {
+    tasks.publish.dependsOn(publishToModrinth)
+}

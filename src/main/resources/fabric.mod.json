@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "basic_materials",
+  "name": "Basic Materials",
+  "description": "Basic materials for other mods to use",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "UpcraftLP",
+      "contact": {
+        "github": "UpcraftLP",
+        "homepage": "https://upcraft.dev",
+        "twitter": "@UpcraftLP"
+      }
+    }
+  ],
+  "icon": "assets/basic_materials/icon.png",
+  "environment": "*",
+  "version": "${version}",
+  "depends": {
+    "fabric": "^0.30.0",
+    "mesh": "^0.6.0",
+    "fabricloader": "^0.11.0",
+    "minecraft": "~1.16.0-0"
+  },
+  "suggests": {
+    "roughlyenoughitems": "*",
+    "roughlyenoughresources": "*"
+  },
+  "entrypoints": {
+    "main": [
+      "dev.upcraft.materials.base.BasicMaterials"
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+    "block.basic_materials.bauxite_ore": "Bauxite Ore",
+    "block.basic_materials.cinnabar_ore": "Cinnabar Ore",
+    "block.basic_materials.copper_ore": "Copper Ore",
+    "block.basic_materials.lead_ore": "Lead Ore",
+    "block.basic_materials.nickel_ore": "Nickel Ore",
+    "block.basic_materials.platinum_ore": "Platinum Ore",
+    "block.basic_materials.silver_ore": "Silver Ore",
+    "block.basic_materials.tin_ore": "Tin Ore",
+    "block.basic_materials.zinc_ore": "Zinc Ore",
+
+    "block.basic_materials.aluminum_block": "Block of Aluminum",
+    "block.basic_materials.copper_block": "Block of Copper",
+    "block.basic_materials.lead_block": "Block of Lead",
+    "block.basic_materials.nickel_block": "Block of Nickel",
+    "block.basic_materials.platinum_block": "Block of Platinum",
+    "block.basic_materials.silver_block": "Block of Silver",
+    "block.basic_materials.tin_block": "Block of Tin",
+    "block.basic_materials.zinc_block": "Block of Zinc",
+
+    "block.basic_materials.brass_block": "Block of Brass",
+    "block.basic_materials.bronze_block": "Block of Bronze",
+    "block.basic_materials.electrum_block": "Block of Electrum",
+    "block.basic_materials.invar_block": "Block of Invar",
+
+    "item.basic_materials.aluminum_ingot": "Aluminum Ingot",
+    "item.basic_materials.copper_ingot": "Copper Ingot",
+    "item.basic_materials.lead_ingot": "Lead Ingot",
+    "item.basic_materials.nickel_ingot": "Nickel Ingot",
+    "item.basic_materials.platinum_ingot": "Platinum Ingot",
+    "item.basic_materials.silver_ingot": "Silver Ingot",
+    "item.basic_materials.tin_ingot": "Tin Ingot",
+    "item.basic_materials.zinc_ingot": "Zinc Ingot",
+
+    "item.basic_materials.cinnabar": "Cinnabar",
+    "item.basic_materials.brass_ingot": "Brass Ingot",
+    "item.basic_materials.bronze_ingot": "Bronze Ingot",
+    "item.basic_materials.electrum_ingot": "Electrum Ingot",
+    "item.basic_materials.invar_ingot": "Invar Ingot"
+}

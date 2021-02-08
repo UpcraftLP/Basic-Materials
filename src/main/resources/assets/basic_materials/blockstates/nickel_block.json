@@ -1,0 +1,7 @@
+{
+    "variants": {
+        "": {
+            "model": "basic_materials:block/nickel_block"
+        }
+    }
+}
