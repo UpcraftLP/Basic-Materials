@@ -20,19 +20,15 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package dev.upcraft.materials.base.init;
+package dev.upcraft.materials.api;
 
-import dev.upcraft.materials.base.BasicMaterials;
-import net.minecraft.block.Block;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.Tag;
+import net.minecraft.block.BlockState;
+import org.jetbrains.annotations.Nullable;
 
-public class MaterialTags {
+public interface Generatable {
 
-    public static final Tag.Identified<Block> OVERWORLD_SANDSTONE = registerRequiredBlockTag("gen/overworld_sandstone");
+    @Nullable
+    GenerationData getDefaultGenerationData();
 
-    private static Tag.Identified<Block> registerRequiredBlockTag(String id) {
-        return BlockTags.register(BasicMaterials.id(id).toString());
-    }
-
+    BlockState getStateForGeneration();
 }

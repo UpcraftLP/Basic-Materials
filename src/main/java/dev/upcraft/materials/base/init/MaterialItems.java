@@ -24,25 +24,32 @@ package dev.upcraft.materials.base.init;
 
 
 import dev.upcraft.materials.base.BasicMaterials;
+import dev.upcraft.materials.base.item.IngredientItem;
 import io.github.glasspane.mesh.api.annotation.AutoRegistry;
 import net.minecraft.item.Item;
 
+@SuppressWarnings("unused")
 @AutoRegistry.Register(value = Item.class, modid = BasicMaterials.MODID, registry = "item")
 public class MaterialItems {
 
-    public static final Item ALUMINUM_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item COPPER_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item LEAD_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item NICKEL_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item PLATINUM_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item SILVER_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item TIN_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item ZINC_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
+    // ingots
+    public static final Item ALUMINUM_INGOT = new IngredientItem();
+    public static final Item COPPER_INGOT = new IngredientItem();
+    public static final Item LEAD_INGOT = new IngredientItem();
+    public static final Item NICKEL_INGOT = new IngredientItem();
+    public static final Item PLATINUM_INGOT = new IngredientItem();
+    public static final Item SILVER_INGOT = new IngredientItem();
+    public static final Item TIN_INGOT = new IngredientItem();
+    public static final Item ZINC_INGOT = new IngredientItem();
 
-    //alloys / misc
-    public static final Item CINNABAR = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item BRASS_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item BRONZE_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item ELECTRUM_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
-    public static final Item INVAR_INGOT = new Item(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
+    // alloys / misc
+    public static final Item CINNABAR_CRYSTAL = new IngredientItem();
+    public static final Item BRASS_INGOT = new IngredientItem();
+    public static final Item BRONZE_INGOT = new IngredientItem();
+    public static final Item ELECTRUM_INGOT = new IngredientItem();
+    public static final Item INVAR_INGOT = new IngredientItem();
+
+    // dusts
+    public static final Item CINNABAR_DUST = new IngredientItem();
+    public static final Item LAPIS_LAZULI_DUST = new IngredientItem();
 }

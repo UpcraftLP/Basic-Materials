@@ -20,19 +20,29 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package dev.upcraft.materials.base.init;
+package dev.upcraft.materials.api;
 
-import dev.upcraft.materials.base.BasicMaterials;
-import net.minecraft.block.Block;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.Tag;
+import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
+import net.minecraft.structure.rule.RuleTest;
+import org.jetbrains.annotations.ApiStatus;
 
-public class MaterialTags {
+import java.util.function.Predicate;
 
-    public static final Tag.Identified<Block> OVERWORLD_SANDSTONE = registerRequiredBlockTag("gen/overworld_sandstone");
+@ApiStatus.Experimental
+public interface GenerationData {
+    int getBottomOffset();
 
-    private static Tag.Identified<Block> registerRequiredBlockTag(String id) {
-        return BlockTags.register(BasicMaterials.id(id).toString());
-    }
+    int getTopOffset();
 
+    int getMaximum();
+
+    int getMaxVeinSize();
+
+    int getWeight();
+
+    boolean isDisabled();
+
+    Predicate<BiomeSelectionContext> getBiomeSelection();
+
+    RuleTest getGenerationRules();
 }

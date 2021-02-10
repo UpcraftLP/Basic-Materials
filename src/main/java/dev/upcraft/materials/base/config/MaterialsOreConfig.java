@@ -26,6 +26,7 @@ import blue.endless.jankson.Jankson;
 import blue.endless.jankson.JsonObject;
 import blue.endless.jankson.JsonPrimitive;
 import blue.endless.jankson.api.SyntaxError;
+import dev.upcraft.materials.api.GenerationData;
 import dev.upcraft.materials.base.BasicMaterials;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectionContext;
 import net.fabricmc.fabric.api.biome.v1.BiomeSelectors;
@@ -54,9 +55,9 @@ public class MaterialsOreConfig {
 
     private static final Path configFile = FabricLoader.getInstance().getConfigDir().resolve("materials/worldgen.json5");
     private static final Jankson SERIALIZER = Jankson.builder().build();
-    private static final Map<Block, GenData> GENERATION_DATA = new HashMap<>();
+    private static final Map<Block, GenerationData> GENERATION_DATA = new HashMap<>();
 
-    public static GenData get(Block block, Identifier id, Function<Block, GenData> defaultValue) {
+    public static GenerationData get(Block block, Identifier id, Function<Block, GenerationData> defaultValue) {
         if (!GENERATION_DATA.containsKey(block)) {
             synchronized (GENERATION_DATA) {
                 GENERATION_DATA.put(block, defaultValue.apply(block));
@@ -94,7 +95,7 @@ public class MaterialsOreConfig {
             GENERATION_DATA.forEach((block, genData) -> {
                 Identifier id = Registry.BLOCK.getId(block);
                 JsonObject data = new JsonObject();
-                data.put("generation_disabled", new JsonPrimitive(genData.disabled));
+                data.put("generation_disabled", new JsonPrimitive(genData.isDisabled()));
                 root.put(id.toString(), data);
             });
         }
@@ -107,11 +108,11 @@ public class MaterialsOreConfig {
                 Identifier id = Registry.BLOCK.getId(block);
                 JsonObject current = root.getObject(id.toString());
                 if (current != null) {
-                    boolean disabled = current.getBoolean("generation_disabled", genData.disabled);
+                    boolean disabled = current.getBoolean("generation_disabled", genData.isDisabled());
                     // TODO actually read values
 
                     // copy old object and set new values
-                    return new GenData(genData.bottomOffset, genData.topOffset, genData.maximum, genData.maxVeinSize, genData.weight, disabled, genData.biomeSelection, genData.generationRules);
+                    return new GenData(genData.getBottomOffset(), genData.getTopOffset(), genData.getMaximum(), genData.getMaxVeinSize(), genData.getWeight(), disabled, genData.getBiomeSelection(), genData.getGenerationRules());
                 }
                 return genData;
             });
@@ -143,17 +144,17 @@ public class MaterialsOreConfig {
         }
     }
 
-    public static class GenData {
+    public static class GenData implements GenerationData {
 
-        public final int bottomOffset;
-        public final int topOffset;
-        public final int maximum;
-        public final int maxVeinSize;
-        public final int weight;
-        public final boolean disabled;
+        private final int bottomOffset;
+        private final int topOffset;
+        private final int maximum;
+        private final int maxVeinSize;
+        private final int weight;
+        private final boolean disabled;
 
-        public final Predicate<BiomeSelectionContext> biomeSelection;
-        public final RuleTest generationRules;
+        private final Predicate<BiomeSelectionContext> biomeSelection;
+        private final RuleTest generationRules;
 
         public GenData(int bottomOffset, int topOffset, int maximum, int maxVeinSize, int weight, boolean disabled, Predicate<BiomeSelectionContext> biomeSelection, RuleTest generationRules) {
             this.bottomOffset = bottomOffset;
@@ -172,6 +173,46 @@ public class MaterialsOreConfig {
 
         public GenData(int bottomOffset, int topOffset, int maximum, int maxVeinSize, int weight, boolean disabled) {
             this(bottomOffset, topOffset, maximum, maxVeinSize, weight, disabled, BiomeSelectors.foundInOverworld(), OreFeatureConfig.Rules.BASE_STONE_OVERWORLD);
+        }
+
+        @Override
+        public int getBottomOffset() {
+            return bottomOffset;
+        }
+
+        @Override
+        public int getTopOffset() {
+            return topOffset;
+        }
+
+        @Override
+        public int getMaximum() {
+            return maximum;
+        }
+
+        @Override
+        public int getMaxVeinSize() {
+            return maxVeinSize;
+        }
+
+        @Override
+        public int getWeight() {
+            return weight;
+        }
+
+        @Override
+        public boolean isDisabled() {
+            return disabled;
+        }
+
+        @Override
+        public Predicate<BiomeSelectionContext> getBiomeSelection() {
+            return biomeSelection;
+        }
+
+        @Override
+        public RuleTest getGenerationRules() {
+            return generationRules;
         }
     }
 }

@@ -22,9 +22,12 @@
  */
 package dev.upcraft.materials.base.block;
 
+import dev.upcraft.materials.api.GenerationData;
+import dev.upcraft.materials.api.Generatable;
 import dev.upcraft.materials.base.BasicMaterials;
 import dev.upcraft.materials.base.config.MaterialsOreConfig;
 import io.github.glasspane.mesh.api.registry.BlockItemProvider;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.OreBlock;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
@@ -33,9 +36,9 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class MaterialOreBlock extends OreBlock implements BlockItemProvider {
+public class MaterialOreBlock extends OreBlock implements BlockItemProvider, Generatable {
 
-    private MaterialsOreConfig.GenData defaultGenerationData = null;
+    private GenerationData defaultGenerationData = null;
 
     /**
      * the minimum XP when mined
@@ -71,13 +74,19 @@ public class MaterialOreBlock extends OreBlock implements BlockItemProvider {
         return this.withConfig(new MaterialsOreConfig.GenData(32, 0, 32, 6, 0, true));
     }
 
-    public MaterialOreBlock withConfig(MaterialsOreConfig.GenData genData) {
+    public MaterialOreBlock withConfig(GenerationData genData) {
         this.defaultGenerationData = genData;
         return this;
     }
 
     @Nullable
-    public MaterialsOreConfig.GenData getDefaultGenerationData() {
+    @Override
+    public GenerationData getDefaultGenerationData() {
         return defaultGenerationData;
+    }
+
+    @Override
+    public BlockState getStateForGeneration() {
+        return this.getDefaultState();
     }
 }

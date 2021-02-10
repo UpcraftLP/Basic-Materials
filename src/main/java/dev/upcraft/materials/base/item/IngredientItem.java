@@ -20,19 +20,14 @@
  * OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE
  * OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package dev.upcraft.materials.base.init;
+package dev.upcraft.materials.base.item;
 
 import dev.upcraft.materials.base.BasicMaterials;
-import net.minecraft.block.Block;
-import net.minecraft.tag.BlockTags;
-import net.minecraft.tag.Tag;
+import net.minecraft.item.Item;
 
-public class MaterialTags {
+public class IngredientItem extends Item {
 
-    public static final Tag.Identified<Block> OVERWORLD_SANDSTONE = registerRequiredBlockTag("gen/overworld_sandstone");
-
-    private static Tag.Identified<Block> registerRequiredBlockTag(String id) {
-        return BlockTags.register(BasicMaterials.id(id).toString());
+    public IngredientItem() {
+        super(new Item.Settings().group(BasicMaterials.ITEM_GROUP));
     }
-
 }

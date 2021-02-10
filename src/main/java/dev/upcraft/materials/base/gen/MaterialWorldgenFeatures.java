@@ -22,8 +22,9 @@
  */
 package dev.upcraft.materials.base.gen;
 
+import dev.upcraft.materials.api.GenerationData;
+import dev.upcraft.materials.api.Generatable;
 import dev.upcraft.materials.base.BasicMaterials;
-import dev.upcraft.materials.base.block.MaterialOreBlock;
 import dev.upcraft.materials.base.config.MaterialsOreConfig;
 import dev.upcraft.materials.base.init.MaterialTags;
 import io.github.glasspane.mesh.util.collections.RegistryHelper;
@@ -47,25 +48,25 @@ public class MaterialWorldgenFeatures {
 
     public static void init() {
         RegistryHelper.visitRegistry(Registry.BLOCK, (blockID, block) -> {
-            if(block instanceof MaterialOreBlock) {
-                MaterialsOreConfig.GenData defaultData = ((MaterialOreBlock) block).getDefaultGenerationData();
+            if(block instanceof Generatable) {
+                GenerationData defaultData = ((Generatable) block).getDefaultGenerationData();
                 if(defaultData != null) { // only proceed if this ore should actually generate naturally
-                    MaterialsOreConfig.GenData data = MaterialsOreConfig.get(block, blockID, b -> ((MaterialOreBlock) b).getDefaultGenerationData());
-                    OreFeatureConfig oreConfig = new OreFeatureConfig(data.generationRules, block.getDefaultState(), data.maxVeinSize);
+                    GenerationData data = MaterialsOreConfig.get(block, blockID, b -> defaultData);
+                    OreFeatureConfig oreConfig = new OreFeatureConfig(data.getGenerationRules(), ((Generatable) block).getStateForGeneration(), data.getMaxVeinSize());
 
                     // y = randomInt(maximum - topOffset) + bottomOffset
-                    RangeDecoratorConfig rangeConfig = new RangeDecoratorConfig(data.bottomOffset, data.topOffset, data.maximum);
+                    RangeDecoratorConfig rangeConfig = new RangeDecoratorConfig(data.getBottomOffset(), data.getTopOffset(), data.getMaximum());
 
                     ConfiguredDecorator<?> decorator = Decorator.RANGE.configure(rangeConfig).spreadHorizontally();
-                    if(data.weight > 0) {
-                        decorator = decorator.repeat(data.weight);
+                    if(data.getWeight() > 0) {
+                        decorator = decorator.repeat(data.getWeight());
                     }
 
                     ConfiguredFeature<?, ?> feature = Feature.ORE.configure(oreConfig).decorate(decorator);
                     Registry.register(BuiltinRegistries.CONFIGURED_FEATURE, BasicMaterials.id(blockID.toString().replace(':', '.')), feature);
                     RegistryKey<ConfiguredFeature<?, ?>> featureKey = BuiltinRegistries.CONFIGURED_FEATURE.getKey(feature).orElseThrow(() -> new IllegalStateException("Feature not registered!"));
-                    if (!data.disabled) {
-                        BiomeModifications.addFeature(data.biomeSelection, GenerationStep.Feature.UNDERGROUND_ORES, featureKey);
+                    if (!data.isDisabled()) {
+                        BiomeModifications.addFeature(data.getBiomeSelection(), GenerationStep.Feature.UNDERGROUND_ORES, featureKey);
                     }
                 }
             }
