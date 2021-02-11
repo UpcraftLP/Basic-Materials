@@ -20,7 +20,7 @@ archivesBaseName = "basic-materials"
 
 boolean isPreviewBuild = !ENV.TAG || ENV.TAG.matches(".+-.+")
 def buildNumber = !ENV.TAG ? ("${ENV.BUILD_NUMBER ? "build.${ENV.BUILD_NUMBER}" : buildTime}-${project.minecraft_version}") : ""
-version = (ENV.TAG ?: "development") + (isPreviewBuild ? "+${buildNumber}" : "")
+version = (ENV.TAG ?: "development") + ((isPreviewBuild && !ENV.TAG) ? "+${buildNumber}" : "")
 
 minecraft {
     accessWidener = file("src/main/resources/basic_materials.accesswidener")
