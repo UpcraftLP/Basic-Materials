@@ -22,7 +22,6 @@
  */
 package dev.upcraft.materials.base.init;
 
-
 import dev.upcraft.materials.base.BasicMaterials;
 import dev.upcraft.materials.base.item.IngredientItem;
 import io.github.glasspane.mesh.api.annotation.AutoRegistry;
@@ -43,13 +42,15 @@ public class MaterialItems {
     public static final Item ZINC_INGOT = new IngredientItem();
 
     // alloys / misc
-    public static final Item CINNABAR_CRYSTAL = new IngredientItem();
     public static final Item BRASS_INGOT = new IngredientItem();
     public static final Item BRONZE_INGOT = new IngredientItem();
+    public static final Item CINNABAR_CRYSTAL = new IngredientItem();
     public static final Item ELECTRUM_INGOT = new IngredientItem();
     public static final Item INVAR_INGOT = new IngredientItem();
+    public static final Item SULFUR_CRYSTAL = new IngredientItem();
 
     // dusts
     public static final Item CINNABAR_DUST = new IngredientItem();
     public static final Item LAPIS_LAZULI_DUST = new IngredientItem();
+    public static final Item SULFUR_DUST = new IngredientItem();
 }
