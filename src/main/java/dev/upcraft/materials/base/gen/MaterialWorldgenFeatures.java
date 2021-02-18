@@ -22,15 +22,20 @@
  */
 package dev.upcraft.materials.base.gen;
 
-import dev.upcraft.materials.api.GenerationData;
+import dev.hephaestus.fiblib.FibLib;
+import dev.hephaestus.fiblib.blocks.BlockFib;
 import dev.upcraft.materials.api.Generatable;
+import dev.upcraft.materials.api.GenerationData;
 import dev.upcraft.materials.base.BasicMaterials;
 import dev.upcraft.materials.base.config.MaterialsOreConfig;
 import dev.upcraft.materials.base.init.MaterialTags;
 import io.github.glasspane.mesh.util.collections.RegistryHelper;
 import net.fabricmc.fabric.api.biome.v1.BiomeModifications;
+import net.minecraft.advancement.Advancement;
+import net.minecraft.block.Blocks;
 import net.minecraft.structure.rule.RuleTest;
 import net.minecraft.structure.rule.TagMatchRuleTest;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
@@ -48,9 +53,9 @@ public class MaterialWorldgenFeatures {
 
     public static void init() {
         RegistryHelper.visitRegistry(Registry.BLOCK, (blockID, block) -> {
-            if(block instanceof Generatable) {
+            if (block instanceof Generatable) {
                 GenerationData defaultData = ((Generatable) block).getDefaultGenerationData();
-                if(defaultData != null) { // only proceed if this ore should actually generate naturally
+                if (defaultData != null) { // only proceed if this ore should actually generate naturally
                     GenerationData data = MaterialsOreConfig.get(block, blockID, b -> defaultData);
                     OreFeatureConfig oreConfig = new OreFeatureConfig(data.getGenerationRules(), ((Generatable) block).getStateForGeneration(), data.getMaxVeinSize());
 
@@ -58,7 +63,7 @@ public class MaterialWorldgenFeatures {
                     RangeDecoratorConfig rangeConfig = new RangeDecoratorConfig(data.getBottomOffset(), data.getTopOffset(), data.getMaximum());
 
                     ConfiguredDecorator<?> decorator = Decorator.RANGE.configure(rangeConfig).spreadHorizontally();
-                    if(data.getWeight() > 0) {
+                    if (data.getWeight() > 0) {
                         decorator = decorator.repeat(data.getWeight());
                     }
 
@@ -69,6 +74,13 @@ public class MaterialWorldgenFeatures {
                         BiomeModifications.addFeature(data.getBiomeSelection(), GenerationStep.Feature.UNDERGROUND_ORES, featureKey);
                     }
                 }
+
+                Identifier advancementID = new Identifier(blockID.getNamespace(), String.format("ore_visibility/%s", blockID.getPath()));
+                FibLib.Blocks.register(new BlockFib(((Generatable) block).getStateForGeneration(), Blocks.STONE.getDefaultState(), player -> {
+                    //noinspection ConstantConditions
+                    Advancement adv = player.getServer().getAdvancementLoader().get(advancementID);
+                    return adv != null && !player.getAdvancementTracker().getProgress(adv).isDone(); // return true if the block should be hidden
+                }));
             }
         });
     }

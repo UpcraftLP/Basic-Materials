@@ -1,0 +1,13 @@
+{
+  "parent": "basic_materials:ore_visibility/root",
+  "criteria": {
+    "impossible": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [
+    [
+      "impossible"
+    ]
+  ]
+}

@@ -33,6 +33,10 @@ repositories {
         url = "https://maven.onyxstudios.dev"
     }
     maven {
+        name = "Hephaestus"
+        url = "https://hephaestus.dev/release"
+    }
+    maven {
         name = "TehNut"
         url = "https://maven.tehnut.info"
     }
@@ -54,6 +58,10 @@ dependencies {
     minecraft "com.mojang:minecraft:${project.minecraft_version}"
     mappings "net.fabricmc:yarn:${project.minecraft_version}+build.${project.yarn_mappings}:v2"
     compileOnly "org.jetbrains:annotations:${project.jetbrains_annotations_version}"
+
+    include modImplementation("dev.hephaestus:FibLib:${project.fiblib_version}") {
+        transitive = false
+    }
 
     modImplementation("mcp.mobius.waila:Hwyla:${project.hwyla_version}") {
         transitive = false
