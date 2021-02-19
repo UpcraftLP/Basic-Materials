@@ -52,5 +52,6 @@ public class MaterialItems {
     // dusts
     public static final Item CINNABAR_DUST = new IngredientItem();
     public static final Item LAPIS_LAZULI_DUST = new IngredientItem();
+    public static final Item SILICON_DUST = new IngredientItem();
     public static final Item SULFUR_DUST = new IngredientItem();
 }
