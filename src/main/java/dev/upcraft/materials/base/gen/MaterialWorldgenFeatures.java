@@ -22,8 +22,8 @@
  */
 package dev.upcraft.materials.base.gen;
 
-import dev.hephaestus.fiblib.FibLib;
-import dev.hephaestus.fiblib.blocks.BlockFib;
+import dev.hephaestus.fiblib.api.BlockFib;
+import dev.hephaestus.fiblib.api.BlockFibRegistry;
 import dev.upcraft.materials.api.Generatable;
 import dev.upcraft.materials.api.GenerationData;
 import dev.upcraft.materials.base.BasicMaterials;
@@ -76,14 +76,14 @@ public class MaterialWorldgenFeatures {
                 }
 
                 Identifier advancementID = new Identifier(blockID.getNamespace(), String.format("ore_visibility/%s", blockID.getPath()));
-                FibLib.Blocks.register(new BlockFib(((Generatable) block).getStateForGeneration(), Blocks.STONE.getDefaultState(), player -> {
-                    if(player.isCreativeLevelTwoOp()) { // don't hide from server operators
+                BlockFibRegistry.register(BlockFib.builder(((Generatable) block).getStateForGeneration(), Blocks.STONE.getDefaultState()).withCondition(player -> {
+                    if (player.isCreativeLevelTwoOp()) { // don't hide from server operators
                         return false;
                     }
                     //noinspection ConstantConditions
                     Advancement adv = player.getServer().getAdvancementLoader().get(advancementID);
                     return adv != null && !player.getAdvancementTracker().getProgress(adv).isDone(); // return true if the block should be hidden
-                }));
+                }).build());
             }
         });
     }

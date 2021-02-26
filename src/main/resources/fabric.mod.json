@@ -20,7 +20,7 @@
   "depends": {
     "fabric": "^0.30.0",
     "mesh": "^0.6.0",
-    "fiblib": "^0.1.6",
+    "fiblib": "^1.0.0",
     "fabricloader": "^0.11.0",
     "minecraft": "~1.16.0-0"
   },
