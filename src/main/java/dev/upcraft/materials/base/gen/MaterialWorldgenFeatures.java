@@ -77,6 +77,9 @@ public class MaterialWorldgenFeatures {
 
                 Identifier advancementID = new Identifier(blockID.getNamespace(), String.format("ore_visibility/%s", blockID.getPath()));
                 FibLib.Blocks.register(new BlockFib(((Generatable) block).getStateForGeneration(), Blocks.STONE.getDefaultState(), player -> {
+                    if(player.isCreativeLevelTwoOp()) { // don't hide from server operators
+                        return false;
+                    }
                     //noinspection ConstantConditions
                     Advancement adv = player.getServer().getAdvancementLoader().get(advancementID);
                     return adv != null && !player.getAdvancementTracker().getProgress(adv).isDone(); // return true if the block should be hidden
